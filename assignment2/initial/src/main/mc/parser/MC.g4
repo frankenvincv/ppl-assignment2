@@ -203,7 +203,7 @@ operand
 
 sub_exp: LB exp RB;
 
-func_call: ID LB exp (COMA exp)* RB;
+func_call: ID LB (exp (COMA exp)*)* RB;
 
 index_exp: (ID|func_call) LSB exp RSB;
 

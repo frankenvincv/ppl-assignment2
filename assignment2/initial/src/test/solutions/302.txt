@@ -1,1 +1,1 @@
-Program([VarDecl(Id(c),StringType)])
+Program([VarDecl(c,StringType)])

@@ -47,8 +47,8 @@ class ASTGeneration(MCVisitor):
     # Visit a parse tree produced by MCParser#var.
     def visitVar(self, ctx:MCParser.VarContext):
         if ctx.LSB():
-            return [Id(ctx.ID().getText()),int(ctx.INTLIT().getText())]
-        return Id(ctx.ID().getText())
+            return [ctx.ID().getText(),int(ctx.INTLIT().getText())]
+        return ctx.ID().getText()
 
 
     def visitFunc_declarate(self, ctx:MCParser.Func_declarateContext):
@@ -76,13 +76,13 @@ class ASTGeneration(MCVisitor):
     # Visit a parse tree produced by MCParser#array_pointer_type.
     def visitArray_pointer_type(self, ctx:MCParser.Array_pointer_typeContext):
         Arraytype = self.visit(ctx.primitive_type())
-        return ArrayPointerType(Arraytype)
+        return ArrayPointerType(Arraytype)  
 
 
     # Visit a parse tree produced by MCParser#para.
     def visitPara(self, ctx:MCParser.ParaContext):
         paraType = self.visit(ctx.primitive_type())
-        return VarDecl(Id(ctx.ID().getText()),ArrayPointerType(paraType)) if (ctx.LSB()) else VarDecl(Id(ctx.ID().getText()),paraType)
+        return VarDecl(ctx.ID().getText(),ArrayPointerType(paraType)) if (ctx.LSB()) else VarDecl(ctx.ID().getText(),paraType)
 
 
 # Visit a parse tree produced by MCParser#statement.
@@ -256,11 +256,7 @@ class ASTGeneration(MCVisitor):
 
     # Visit a parse tree produced by MCParser#exp8.
     def visitExp8(self, ctx:MCParser.Exp8Context):
-        if (ctx.getChildCount() == 1):
-            return self.visit(ctx.operand())
-        body = self.visit(ctx.operand())
-        op = "[]"
-        return UnaryOp(op,body)
+        return self.visit(ctx.operand())
 
 
     # Visit a parse tree produced by MCParser#operand.
@@ -289,6 +285,7 @@ class ASTGeneration(MCVisitor):
             if isinstance(para, list): paraList.extend(para if para else [])
             else: paraList.append(para)
         return CallExpr(method,paraList)
+        
 
     # Visit a parse tree produced by MCParser#index_exp.
     def visitIndex_exp(self, ctx:MCParser.Index_expContext):

@@ -1,0 +1,6 @@
+void main(string arg[]) {
+
+        }
+        int foo(int a,int b) {
+
+        }
