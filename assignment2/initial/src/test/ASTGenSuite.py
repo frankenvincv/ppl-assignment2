@@ -162,4 +162,148 @@ boolean[] func() {
         expect = str(Program(
             [FuncDecl(Id("main"), [], VoidType(), Block([VarDecl("a", FloatType())]))]))
         self.assertTrue(TestAST.checkASTGen(input, expect, 321))
-
+    def test_program_22(self):
+        input = """
+void main(){}
+                """
+        expect=str(Program([FuncDecl(Id('main'),[],VoidType(),Block([]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,322))
+    def test_program_23(self):
+        input = """
+int a,a[2],b;float x,_x[3],y;boolean k,_k[4],h;
+                """
+        expect= str(Program([VarDecl('a',IntType()),VarDecl('a',ArrayType(2,IntType())),VarDecl('b',IntType()),VarDecl('x',FloatType(
+            )),VarDecl('_x',ArrayType(3,FloatType())),VarDecl('y',FloatType()),VarDecl('k',BoolType(
+            )),VarDecl('_k',ArrayType(4,BoolType())),VarDecl('h',BoolType())]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,323))
+    def test_program_24(self):
+        input = """
+void a(){void b(){}}
+                """
+        expect=str(Program([FuncDecl(Id('a'),[],VoidType(),Block([CallExpr(Id('b'),[]),Block([])]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,324))
+    def test_program_25(self):
+        input = """
+void _a(){
+    if (a==b) return a;
+}
+                """
+        expect=str(Program([FuncDecl(Id('_a'),[],VoidType(),Block([
+            If(BinaryOp('==',Id('a'),Id('b')),Return(Id('a')))]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,325))
+    def test_program_26(self):
+        input = """int main(){
+            do {} while 1;
+        }"""
+        expect = str(Program([FuncDecl(Id("main"), [], IntType(), Block(
+            [Dowhile([Block([])], IntLiteral(1))]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,326))
+    def test_program_27(self):
+        input = """int main(){
+            do {
+                int a;
+            } {
+                float b[2];
+            }{
+                foo(x==3)[2];
+            } while 1;
+        }"""
+        expect = str(Program([FuncDecl(Id("main"), [], IntType(), Block(
+            [Dowhile([Block([VarDecl('a',IntType())]),Block([VarDecl('b',ArrayType(2,FloatType()))]),
+                Block([ArrayCell(CallExpr(Id('foo'),[BinaryOp('==',Id('x'),IntLiteral(3))]),IntLiteral(2))])],IntLiteral(1))]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,327))
+    def test_program_28(self):
+        input = """void main() {
+                      int i;
+                      for(a;b;c)d;
+                      } 
+                """
+        expect = str(Program([FuncDecl(Id('main'),[],VoidType(),Block([VarDecl('i',IntType()),For(Id('a'),Id('b'),Id('c'),Id('d'))]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,328))
+    def test_program_29(self):
+        input = """void main() {
+                      int i;
+                      for( a = 0 ; a < 10 ; a + 1 ) {
+                         if(a == 1) break;
+                        }
+                      } """
+        expect=str(Program([FuncDecl(Id('main'),[],VoidType(),Block([VarDecl('i',IntType()),For(BinaryOp('=',Id('a'),IntLiteral(0)),
+            BinaryOp('<',Id('a'),IntLiteral(10)),BinaryOp('+',Id('a'),IntLiteral(1)),Block([If(BinaryOp('==',Id('a'),IntLiteral(1)),Break())]))]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,329))
+    def test_program_30(self):
+        input = """
+void _a(float a,int k){if(a)if(b)if(c)if(d)if(e){for(f;g;h)a;}else(e);}
+                """
+        expect=str(Program([FuncDecl(Id('_a'),[VarDecl('a',FloatType()),VarDecl('k',IntType())],VoidType()
+            ,Block([If(Id('a'),If(Id('b'),If(Id('c'),If(Id('d'),If(Id('e'),Block([For(Id('f'),Id('g'),Id('h'),Id('a'))]),Id('e'))))))]))]))
+        self.assertTrue(TestAST.checkASTGen(input,expect,330))
+#     def test_program_31(self):
+#         input = """
+# void _a(float a,int k){if(a)if(b)if(c)if(d)if(e){for(f;g;h)a;}else(e);}
+# float[] _c(string a[]){for(i=0;i<100;i=i+1){for(j=0;j<100;i=i+1)return;}}
+# string _d(int a[],float b){do{if(a)for(b;c;d)return;}while(true);}
+# boolean[] _e(boolean k,boolean j[5]){/*do no thing*/} 
+#                 """
+#         expect="Error on line 5 col 33: 5"
+#         self.assertTrue(TestAST.checkASTGen(input,expect,251))
+#     def test_program_32(self):
+#         input = """
+# void _a(float a,int k){if(a)if(b)if(c)if(d)if(e){for(f;g;h)a;}else(e);}
+# float[] _c(string a[]){for(i=0;i<100;i=i+1){for(j=0;j<100;i=i+1)return;}}
+# string _d(int a[],float b){do{if(a)for(b;c;d)return;}while(true);}
+# boolean[] _e(boolean k,boolean j[]){_a(.2e-12,32);_c("testpara");_d(x[],3.e-12);} 
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,252))
+#     def test_program_33(self):
+#         input = """
+# boolean isTrue(boolean k){if(k==true)return true;else return false;}
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,253))
+#     def test_program_34(self):
+#         input = """
+# string isString(string str){if(s="ppl")return("p");else if(s="dsa")return("d");else return("nothing");}
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,254))
+#     def test_program_35(self):
+#         input = """
+# boolean isTrue(boolean k){if(k==true)return true;else return false;}
+# string isString(string str){if(s="ppl")return("p");else if(s="dsa")return("d");else return("nothing");}
+# void main(){int a; a = 1; printf(isTrue(a)||isString(a));}
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,255))
+#     def test_program_36(self):
+#         input = """
+# boolean isPrime;
+# int checkPrime(int index){for(i = 2; i <=index/2;i = i+1){if(index%i==0){return 0;}}return 1;}
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,256))
+#     def test_program_37(self):
+#         input = """
+# boolean isTrue(boolean k){if(k==true)return true;else return false;}
+# string isString(string str){if(s="ppl")return("p");else if(s="dsa")return("d");else return("nothing");}
+# boolean isPrime;
+# int checkPrime(int index){for(i = 2; i <=index/2;i = i+1){if(index%i==0){return 0;}}return 1;}
+# void main(){int a; a = 1; printf(isTrue(a)||isString(a)||checkPrime(3));}
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,257))
+#     def test_program_38(self):
+#         input = """
+# int a[5];
+# void init(){for(i=0;i<5;i=i+1)a[i]=i;}
+#                 """
+#         expect=str()
+#         self.assertTrue(TestAST.checkASTGen(input,expect,258))
+#     def test_program_39(self):
+#         input = """
+# int a[5];
+# void init(){for(i=0;i<5;i=i+1)a[i]=i;}
+# int main(int argc, string argv){init();for(i=0;i<5;i=i+1){printf("%d : \t",a[i]);}}
+#                 """
+#         expect="%d : "
+#         self.assertTrue(TestAST.checkASTGen(input,expect,259))

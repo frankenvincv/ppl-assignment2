@@ -92,9 +92,9 @@ class ASTGeneration(MCVisitor):
 
     # Visit a parse tree produced by MCParser#if_statement.
     def visitIf_statement(self, ctx:MCParser.If_statementContext):
-        expr = self.visit(ctx.exp)
+        expr = self.visit(ctx.exp())
         thenStmt = self.visit(ctx.statement())
-        return If(expr,thenStmt,self.visit(ctx.else_statement())) if (ctx.else_statement()) else If(exp,thenStmt)
+        return If(expr,thenStmt,self.visit(ctx.else_statement())) if (ctx.else_statement()) else If(expr,thenStmt)
 
 
 
@@ -106,11 +106,11 @@ class ASTGeneration(MCVisitor):
 
     # Visit a parse tree produced by MCParser#do_while_statement.
     def visitDo_while_statement(self, ctx:MCParser.Do_while_statementContext):
-        expr = self.visit(ctx.exp)
+        expr = self.visit(ctx.exp())
         sl = []
         for x in ctx.statement():
             stmt = self.visitStatement(x)
-            sl.append(stml)
+            sl.append(stmt)
         return Dowhile(sl,expr)
 
 
@@ -136,7 +136,7 @@ class ASTGeneration(MCVisitor):
     # Visit a parse tree produced by MCParser#return_statement.
     def visitReturn_statement(self, ctx:MCParser.Return_statementContext):
         if (ctx.exp()):
-            return Return(self.visit(exp()))
+            return Return(self.visit(ctx.exp()))
         else: return Return()
 
 

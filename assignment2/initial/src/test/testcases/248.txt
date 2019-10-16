@@ -1,0 +1,6 @@
+
+void _a(){if(a)if(b)if(c)if(d)if(e){for(f;g;h)a;}else(e);}
+float[] _c(){for(i=0;i<100;i=i+1){for(j=0;j<100;i=i+1)return;}}
+string _d(){do{if(a)for(b;c;d)return;}while(true);}
+boolean[] _e(){} 
+                
