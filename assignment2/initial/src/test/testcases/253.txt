@@ -1,3 +1,0 @@
-
-boolean isTrue(boolean k){if(k==true)return true;else return false;}
-                

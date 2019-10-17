@@ -1,3 +1,0 @@
-
-void _a(){if(a)for(b;c;d){}}int _b(){}float[] _c(){}string _d(){}boolean[] _e(){} 
-                

@@ -1,3 +1,0 @@
-
-int a,a[2],b;float x,_x[3],y;boolean k,_k[4],h;string s,_s[5],str;void init(){a=3;b=1;k=true;x=0.00001e-12.23456789;}
-                

@@ -1,5 +1,0 @@
-void main() {
-                      int i;
-                      for(a;b;c)d;
-                      } 
-                

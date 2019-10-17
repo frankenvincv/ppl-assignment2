@@ -1,5 +1,0 @@
-
-boolean[] func() {
-    "2x+3y" == foo(x+3)[y != 3];
-}
-        
